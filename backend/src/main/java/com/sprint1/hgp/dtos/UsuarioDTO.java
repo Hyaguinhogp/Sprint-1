@@ -1,9 +1,12 @@
 package com.sprint1.hgp.dtos;
 
+import java.io.Serializable;
+
 import com.sprint1.hgp.entities.Usuario;
 
-public class UsuarioDTO {
-
+public class UsuarioDTO implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
 	private Long cdUsuario;
 	private String nome;
 	private String email;
@@ -12,6 +15,7 @@ public class UsuarioDTO {
 	private String tipoLogin;
 	private String cep;
 	private String cidade;
+	private String estado;
 	private String ddd;
 	private String telefone;
 	private String rendaMensal;
@@ -20,7 +24,7 @@ public class UsuarioDTO {
 	}
 
 	public UsuarioDTO(Long cdUsuario, String nome, String email, String dataNascimento, String cpfCnpj,
-			String tipoLogin, String cep, String cidade, String ddd, String telefone, String rendaMensal) {
+			String tipoLogin, String cep, String cidade, String estado, String ddd, String telefone, String rendaMensal) {
 		this.cdUsuario = cdUsuario;
 		this.nome = nome;
 		this.email = email;
@@ -29,6 +33,7 @@ public class UsuarioDTO {
 		this.tipoLogin = tipoLogin;
 		this.cep = cep;
 		this.cidade = cidade;
+		this.estado = estado;
 		this.ddd = ddd;
 		this.telefone = telefone;
 		this.rendaMensal = rendaMensal;
@@ -42,7 +47,8 @@ public class UsuarioDTO {
 		this.cpfCnpj = usuario.getCpfCnpj();
 		this.tipoLogin = usuario.getTipoLogin();
 		this.cep = usuario.getCep();
-		this.cidade = usuario.getCidade();
+		this.cidade = usuario.getCidade().getNomeCidade();
+		this.estado = usuario.getCidade().getEstado().getNomeEstado();
 		this.ddd = usuario.getDdd();
 		this.telefone = usuario.getTelefone();
 		this.rendaMensal = usuario.getRendaMensal();
@@ -110,6 +116,14 @@ public class UsuarioDTO {
 
 	public void setCidade(String cidade) {
 		this.cidade = cidade;
+	}
+	
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
 	public String getDdd() {

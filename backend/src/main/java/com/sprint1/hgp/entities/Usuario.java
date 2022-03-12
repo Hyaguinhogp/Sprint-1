@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Usuario {
@@ -17,7 +20,12 @@ public class Usuario {
 	private String cpfCnpj;
 	private String tipoLogin;
 	private String cep;
-	private String cidade;
+	
+	@ManyToOne
+	@JoinTable(name = "tb_usuario_cidade", 
+	joinColumns = @JoinColumn(name = "cdUsuario"),
+	inverseJoinColumns = @JoinColumn(name = "Cidade_id"))
+	private Cidade cidade;
 	private String ddd;
 	private String telefone;
 	private String rendaMensal;
@@ -26,7 +34,7 @@ public class Usuario {
 	}
 
 	public Usuario(Long cdUsuario, String nome, String email, String dataNascimento, String cpfCnpj, String tipoLogin,
-			String cep, String cidade, String ddd, String telefone, String rendaMensal) {
+			String cep, Cidade cidade, String ddd, String telefone, String rendaMensal) {
 		this.cdUsuario = cdUsuario;
 		this.nome = nome;
 		this.email = email;
@@ -96,11 +104,11 @@ public class Usuario {
 		this.cep = cep;
 	}
 
-	public String getCidade() {
+	public Cidade getCidade() {
 		return cidade;
 	}
 
-	public void setCidade(String cidade) {
+	public void setCidade(Cidade cidade) {
 		this.cidade = cidade;
 	}
 
