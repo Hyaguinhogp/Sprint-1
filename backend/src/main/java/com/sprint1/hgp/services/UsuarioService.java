@@ -52,6 +52,11 @@ public class UsuarioService {
 		return new UsuarioDTO(usuario);
 	}
 	
+	@Transactional
+	public void deleteUsuario(Long id) {
+		usuarioRepository.deleteById(id);
+	}
+	
 	private void updateEntity(UsuarioUpdateDTO dto, Usuario usuario) {
 		usuario.setEmail(dto.getEmail());
 		usuario.setDdd(dto.getDdd());
