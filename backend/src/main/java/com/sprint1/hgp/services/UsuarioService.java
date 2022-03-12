@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sprint1.hgp.dtos.UsuarioDTO;
+import com.sprint1.hgp.dtos.UsuarioUpdateDTO;
 import com.sprint1.hgp.entities.Cidade;
 import com.sprint1.hgp.entities.Usuario;
 import com.sprint1.hgp.repositories.CidadeRepository;
@@ -36,6 +37,25 @@ public class UsuarioService {
 		usuarioRepository.save(usuario);
 		
 		return new UsuarioDTO(usuario);
+	}
+	
+	@Transactional
+	public UsuarioDTO updateUsuario(Long id, UsuarioUpdateDTO updateDto) {
+		Usuario usuario = usuarioRepository.getOne(id);
+		updateEntity(updateDto, usuario);
+		
+		Cidade cidadeDoUsuario = cidadeRepository.findByNomeCidade(updateDto.getCidade());
+		usuario.setCidade(cidadeDoUsuario);
+		
+		usuarioRepository.save(usuario);
+		
+		return new UsuarioDTO(usuario);
+	}
+	
+	private void updateEntity(UsuarioUpdateDTO dto, Usuario usuario) {
+		usuario.setEmail(dto.getEmail());
+		usuario.setDdd(dto.getDdd());
+		usuario.setTelefone(dto.getTelefone());
 	}
 	
 	private void dtoToEntity(UsuarioDTO dto, Usuario usuario) {
