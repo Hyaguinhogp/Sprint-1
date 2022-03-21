@@ -12,11 +12,15 @@ import com.sprint1.hgp.entities.Cidade;
 import com.sprint1.hgp.entities.Usuario;
 import com.sprint1.hgp.repositories.CidadeRepository;
 import com.sprint1.hgp.repositories.UsuarioRepository;
+import com.sprint1.hgp.services.exceptions.ArgumentNotValidException;
 import com.sprint1.hgp.services.exceptions.DatabaseException;
 import com.sprint1.hgp.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UsuarioService {
+	
+	private final short CPF = 11;
+	private final short CNPJ = 14;
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -74,6 +78,18 @@ public class UsuarioService {
 		
 	}
 	
+	private String cpfOrCnpj(String cpfcnpj) {
+		if(cpfcnpj.length() == this.CPF) {
+			return "CPF: " + cpfcnpj;
+		}
+		else if(cpfcnpj.length() == this.CNPJ) {
+			return "CNPJ: " + cpfcnpj;
+		}
+		else {
+			throw new ArgumentNotValidException("CPF/CNPJ inválido.");
+		}
+	}
+	
 	private void updateEntity(UsuarioUpdateDTO dto, Usuario usuario) {
 		usuario.setEmail(dto.getEmail());
 		usuario.setDdd(dto.getDdd());
@@ -85,7 +101,7 @@ public class UsuarioService {
 		usuario.setNome(dto.getNome());
 		usuario.setEmail(dto.getEmail());
 		usuario.setDataNascimento(dto.getDataNascimento());
-		usuario.setCpfCnpj(dto.getCpfCnpj());
+		usuario.setCpfCnpj(cpfOrCnpj(dto.getCpfCnpj()));
 		usuario.setTipoLogin(dto.getTipoLogin());
 		usuario.setCep(dto.getCep());
 		usuario.setDdd(dto.getDdd());
