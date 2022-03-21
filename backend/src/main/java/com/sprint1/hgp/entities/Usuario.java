@@ -1,5 +1,6 @@
 package com.sprint1.hgp.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,8 +16,12 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long cdUsuario;
 	private String nome;
+	
+	@Column(unique = true)
 	private String email;
 	private String dataNascimento;
+	
+	@Column(unique = true)
 	private String cpfCnpj;
 	private String tipoLogin;
 	private String cep;

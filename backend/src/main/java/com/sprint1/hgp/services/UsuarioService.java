@@ -1,6 +1,8 @@
 package com.sprint1.hgp.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +12,8 @@ import com.sprint1.hgp.entities.Cidade;
 import com.sprint1.hgp.entities.Usuario;
 import com.sprint1.hgp.repositories.CidadeRepository;
 import com.sprint1.hgp.repositories.UsuarioRepository;
+import com.sprint1.hgp.services.exceptions.DatabaseException;
+import com.sprint1.hgp.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UsuarioService {
@@ -34,7 +38,12 @@ public class UsuarioService {
 		Cidade cidadeDoUsuario = cidadeRepository.findByNomeCidade(dto.getCidade());
 		usuario.setCidade(cidadeDoUsuario);
 		
-		usuarioRepository.save(usuario);
+		try {
+			usuarioRepository.save(usuario);
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new DatabaseException("Email ou CPF/CNPJ ja existem na base");
+		}
 		
 		return new UsuarioDTO(usuario);
 	}
@@ -44,8 +53,10 @@ public class UsuarioService {
 		Usuario usuario = usuarioRepository.getOne(id);
 		updateEntity(updateDto, usuario);
 		
-		Cidade cidadeDoUsuario = cidadeRepository.findByNomeCidade(updateDto.getCidade());
-		usuario.setCidade(cidadeDoUsuario);
+		if(updateDto.getCidade() != null) {
+			Cidade cidadeDoUsuario = cidadeRepository.findByNomeCidade(updateDto.getCidade());
+			usuario.setCidade(cidadeDoUsuario);
+		}
 		
 		usuarioRepository.save(usuario);
 		
@@ -54,7 +65,13 @@ public class UsuarioService {
 	
 	@Transactional
 	public void deleteUsuario(Long id) {
-		usuarioRepository.deleteById(id);
+		try {
+			usuarioRepository.deleteById(id);
+		}
+		catch(EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("Usuário não existe.");
+		}
+		
 	}
 	
 	private void updateEntity(UsuarioUpdateDTO dto, Usuario usuario) {

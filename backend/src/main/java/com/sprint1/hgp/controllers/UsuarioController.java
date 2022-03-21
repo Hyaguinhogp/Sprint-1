@@ -2,6 +2,8 @@ package com.sprint1.hgp.controllers;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +34,7 @@ public class UsuarioController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<UsuarioDTO> insertUser(@RequestBody UsuarioDTO dto){
+	public ResponseEntity<UsuarioDTO> insertUser(@Valid @RequestBody UsuarioDTO dto){
 		dto = usuarioService.insertUsuario(dto);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")

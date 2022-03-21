@@ -1,4 +1,4 @@
-INSERT INTO usuario(nome) VALUES('Breno Sumaeta');
+INSERT INTO usuario(nome, cpf_cnpj) VALUES('Breno Sumaeta', '14');
 
 INSERT INTO cidade(nome_cidade) VALUES('Manaus');
 INSERT INTO cidade(nome_cidade) VALUES('Manacapuru');

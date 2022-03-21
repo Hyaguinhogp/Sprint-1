@@ -2,6 +2,8 @@ package com.sprint1.hgp.dtos;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+
 import com.sprint1.hgp.entities.Usuario;
 
 public class UsuarioDTO implements Serializable{
@@ -9,6 +11,8 @@ public class UsuarioDTO implements Serializable{
 	
 	private Long cdUsuario;
 	private String nome;
+	
+	@Email
 	private String email;
 	private String dataNascimento;
 	private String cpfCnpj;
